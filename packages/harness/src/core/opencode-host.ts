@@ -48,6 +48,7 @@ export interface OpenCodeWorkspace {
   cwd: string;
 }
 export interface HostedOpenCode extends OpenCodeWorkspace {
+  model: { providerID: "sapiom"; modelID: string };
   stateRoot: string;
   server: OpenCodeServer;
   signal: AbortSignal;
@@ -451,6 +452,7 @@ export class OpenCodeHost {
       await this.validate(entry);
       const hosted: HostedOpenCode = {
         ...entry.workspace,
+        model: { providerID: "sapiom", modelID: this.options.bridge.model },
         stateRoot,
         server,
         signal: entry.abort.signal,
