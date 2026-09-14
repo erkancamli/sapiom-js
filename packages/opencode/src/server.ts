@@ -14,6 +14,7 @@ import { userInfo } from "node:os";
 import { dirname, join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { prepareRuntimeDependencies } from "./runtime-dependencies.js";
 
 export interface StartOpenCodeServerOptions {
   cwd: string;
@@ -552,6 +553,14 @@ export async function startOpenCodeServer(
       mkdir(path, { recursive: true, mode: 0o700 }),
     ),
   );
+  try {
+    await prepareRuntimeDependencies(
+      join(directories.XDG_CONFIG_HOME, "opencode"),
+    );
+  } catch {
+    await rm(launchRoot, { recursive: true, force: true }).catch(() => {});
+    throw new OpenCodeStartupError("launch-failed");
+  }
   if (options.signal?.aborted) {
     await rm(launchRoot, { recursive: true, force: true }).catch(() => {});
     throw new OpenCodeStartupError("cancelled");
