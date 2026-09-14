@@ -1,7 +1,9 @@
 # @sapiom/opencode
 
-Pinned OpenCode 1.18.29, started directly through `startOpenCodeServer()` without
-an installation command at runtime. Studio owns authorization, working directory,
+Pinned OpenCode 1.18.29 and its matching plugin dependencies are installed with
+the package. Each native launch links that installed plugin into its private
+configuration, so opening another Assistant session does not run an npm install
+or wait for the package registry. Studio owns authorization, working directory,
 state directory, credentials, and shutdown. OpenCode owns conversations and agent
 execution.
 
